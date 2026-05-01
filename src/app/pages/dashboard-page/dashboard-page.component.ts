@@ -45,7 +45,6 @@ export default class DashboardPageComponent {
 
     loadPokemonPage() {
         this.isLoading.set(true);
-        // Limpiamos los pokemons actuales para que se muestre el loading si lo deseas
         this.pokemons.set([]); 
         
         this.pokeApiService.getAllPokemon(this.offset(), this.limit).pipe(

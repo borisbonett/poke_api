@@ -13,7 +13,7 @@
         @for (pokemon of pokemons(); track pokemon.id) {
         <div class="col">
             <!-- Tarjeta Dark suave -->
-            <div class="card h-100 shadow border-secondary rounded-4 overflow-hidden bg-dark text-light">
+            <div class="card h-100 shadow border-secondary rounded-4 overflow-hidden">
                 <div class="text-center p-4 d-flex justify-content-center align-items-center"
                     style="background-color: rgba(255,255,255,0.05); min-height: 250px;">
                     <img [src]="pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default"

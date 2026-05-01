@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+  /* Variables globales para cambiar fácilmente los colores en toda la app */
+  --app-bg-color: #1c1e22; /* Gris oscuro minimalista para el fondo de pantalla */
+  --app-card-bg: #2b3035;  /* Gris un poco más claro para que las tarjetas resalten */
+  --app-text-color: #e0e0e0; /* Color de texto general */
+  --app-border-color: rgba(255, 255, 255, 0.1); /* Bordes sutiles */
+}
+
+body {
+  background-color: var(--app-bg-color) !important;
+  color: var(--app-text-color) !important;
+}
+
+.card {
+  background-color: var(--app-card-bg) !important;
+  color: var(--app-text-color) !important;
+  border-color: var(--app-border-color) !important;
+}
