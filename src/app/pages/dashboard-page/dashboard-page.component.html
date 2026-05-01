@@ -1,55 +1,88 @@
-<div class="container py-4 min-vh-100 d-flex flex-column">
-    <h1 class="mb-5 text-center fw-bold">Pokédex</h1>
+<!-- Navbar Responsive -->
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color: var(--app-card-bg); border-bottom: 1px solid var(--app-border-color); padding-top: 1rem; padding-bottom: 1rem;">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/dashboard">
+      <div class="bg-warning rounded-circle d-flex justify-content-center align-items-center shadow-sm" style="width: 40px; height: 40px;">
+        <span class="fs-4 text-dark" style="line-height: 1;">⚡</span>
+      </div>
+      <span class="fw-bold fs-4 text-uppercase text-white" style="letter-spacing: 1.5px;">PokéDash</span>
+    </a>
+    
+    <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse mt-3 mt-lg-0" id="navbarNav">
+      <ul class="navbar-nav ms-auto gap-2">
+        <li class="nav-item">
+          <a class="nav-link px-4 py-2 rounded-pill transition-all text-center text-lg-start" 
+             routerLink="/dashboard" 
+             routerLinkActive="bg-secondary bg-opacity-25 text-white fw-bold" 
+             [routerLinkActiveOptions]="{exact: true}">
+            🏠 Inicio
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-4 py-2 rounded-pill transition-all text-center text-lg-start" 
+             routerLink="/dashboard/search" 
+             routerLinkActive="bg-secondary bg-opacity-25 text-white fw-bold">
+            🔍 Pokédex
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-    @if (isLoading()) {
-    <div class="flex-grow-1 d-flex justify-content-center align-items-center">
-        <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status">
-            <span class="visually-hidden">Cargando...</span>
+<!-- Main Content Area -->
+<main class="container py-5 min-vh-100 d-flex flex-column">
+  
+  <!-- Hero Section (Sólo se muestra en el inicio /dashboard exacto) -->
+  @if (router.url === '/dashboard') {
+    <div class="row align-items-center flex-grow-1 gy-5 mt-2">
+      
+      <!-- Text & Call to Actions -->
+      <div class="col-lg-6 text-center text-lg-start" style="z-index: 2;">
+        <div class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-4 fw-bold shadow-sm fs-6">
+          🌟 Pokédex Interactiva 1.0
         </div>
-    </div>
-    } @else {
-    <!-- Cambiado a max 3 columnas para hacer tarjetas más grandes -->
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-5">
-        @for (pokemon of pokemons(); track pokemon.id) {
-        <div class="col">
-            <!-- Tarjeta Dark suave -->
-            <div class="card h-100 shadow border-secondary rounded-4 overflow-hidden">
-                <div class="text-center p-4 d-flex justify-content-center align-items-center"
-                    style="background-color: rgba(255,255,255,0.05); min-height: 250px;">
-                    <img [src]="pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default"
-                        class="img-fluid" style="max-height: 200px; filter: drop-shadow(0px 8px 8px rgba(0,0,0,0.5));"
-                        [alt]="pokemon.name">
-                </div>
-                <div class="card-body text-center p-4">
-                    <h5 class="card-title text-capitalize fw-bold mb-4 fs-3">{{ pokemon.name }}</h5>
-                    <div class="d-flex justify-content-center flex-wrap gap-2">
-                        @for (typeInfo of pokemon.types; track typeInfo.type.name) {
-                        <!-- Color dinámico del tipo -->
-                        <span
-                            class="badge rounded-pill px-4 py-2 fs-6 text-capitalize text-white shadow-sm border border-light border-opacity-25"
-                            [style.backgroundColor]="getTypeColor(typeInfo.type.name)">
-                            {{ typeInfo.type.name }}
-                        </span>
-                        }
-                    </div>
-                </div>
-            </div>
+        <h1 class="display-3 fw-bolder mb-4 text-white" style="line-height: 1.1; letter-spacing: -1px;">
+          Descubre el mundo <br>
+          <span class="text-warning" style="text-shadow: 0 0 30px rgba(255,193,7,0.3);">Pokémon</span>
+        </h1>
+        <p class="lead mb-5 fs-4" style="color: var(--app-text-color); max-width: 600px; margin: 0 auto; opacity: 0.8;">
+          Explora la base de datos más completa. Busca, descubre y aprende sobre todas las criaturas, estadísticas y habilidades.
+        </p>
+        <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
+          <a routerLink="/dashboard/search" class="btn btn-warning btn-lg px-5 py-3 rounded-pill fw-bold text-dark shadow-lg btn-hover-scale d-flex justify-content-center align-items-center gap-2">
+            <span>🎮</span> Abrir Pokédex
+          </a>
+          <a href="https://pokeapi.co/" target="_blank" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold shadow-sm btn-hover-scale d-flex justify-content-center align-items-center gap-2">
+            <span>📚</span> API Oficial
+          </a>
         </div>
-        }
-    </div>
+      </div>
 
-    <!-- Paginador -->
-    <div class="d-flex justify-content-center align-items-center mt-5 gap-4 mt-auto pt-4">
-        <button class="btn btn-custom-dark px-4 py-2 rounded-pill fw-bold" (click)="prevPage()"
-            [disabled]="offset() === 0">
-            &laquo; Anterior
-        </button>
-        <span class="fw-bold fs-4 text-secondary">
-            Página {{ (offset() / limit) + 1 }}
-        </span>
-        <button class="btn btn-custom-dark px-4 py-2 rounded-pill fw-bold" (click)="nextPage()">
-            Siguiente &raquo;
-        </button>
+      <!-- Creative Graphic Section -->
+      <div class="col-lg-6 text-center position-relative mt-5 mt-lg-0">
+        <!-- Glow background effect -->
+        <div class="position-absolute top-50 start-50 translate-middle bg-warning rounded-circle blur-glow"></div>
+        
+        <!-- Pikachu Float Image -->
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" 
+             alt="Pikachu" 
+             class="img-fluid position-relative pikachu-float" 
+             style="max-height: 450px; filter: drop-shadow(0 25px 25px rgba(0,0,0,0.6)); z-index: 1;">
+             
+        <!-- Decorative floating Orbs -->
+        <div class="position-absolute badge bg-danger rounded-circle shadow-lg float-delay-1" style="top: 10%; left: 15%; width: 50px; height: 50px;"></div>
+        <div class="position-absolute badge bg-primary rounded-circle shadow-lg float-delay-2" style="bottom: 10%; right: 15%; width: 35px; height: 35px;"></div>
+      </div>
+      
     </div>
-    }
-</div>
+  }
+
+  <!-- Aquí se renderizan las páginas hijas (ej. la de búsqueda) -->
+  <router-outlet></router-outlet>
+  
+</main>
