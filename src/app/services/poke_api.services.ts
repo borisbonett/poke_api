@@ -8,8 +8,8 @@ export class PokeApiService {
 
     private http = inject(HttpClient);
 
-    getAllPokemon() {
-        return this.http.get(environment.pokeApiUrl)
+    getAllPokemon(offset: number = 0, limit: number = 20) {
+        return this.http.get(`${environment.pokeApiUrl}?offset=${offset}&limit=${limit}`);
     }
 
     getPokemonByUrl(url: string) {
