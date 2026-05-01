@@ -1,0 +1,36 @@
+<div class="container py-5">
+  <h1 class="mb-4 text-center fw-bold">Pokédex</h1>
+  
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    @for (pokemon of pokemons(); track pokemon.id) {
+      <div class="col">
+        <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
+          <div class="bg-light text-center p-4">
+            <img 
+                [src]="pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default" 
+                class="img-fluid" 
+                style="max-height: 150px;"
+                [alt]="pokemon.name"
+            >
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title text-capitalize fw-bold mb-3">{{ pokemon.name }}</h5>
+            <div class="d-flex justify-content-center flex-wrap gap-2">
+              @for (typeInfo of pokemon.types; track typeInfo.type.name) {
+                <span class="badge rounded-pill text-bg-secondary px-3 py-2 text-capitalize">
+                  {{ typeInfo.type.name }}
+                </span>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="col-12 text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+    }
+  </div>
+</div>
