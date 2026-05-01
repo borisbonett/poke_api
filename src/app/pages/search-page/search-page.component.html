@@ -1,55 +1,108 @@
-<div class="container py-4 min-vh-100 d-flex flex-column">
-    <h1 class="mb-5 text-center fw-bold">Pokédex</h1>
+<div class="pokedex-wrapper">
 
-    @if (isLoading()) {
-    <div class="flex-grow-1 d-flex justify-content-center align-items-center">
-        <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status">
-            <span class="visually-hidden">Cargando...</span>
+    <!-- Header -->
+    <header class="pokedex-header">
+        <div class="header-inner">
+            <div class="logo-area">
+                <span class="pokeball-icon"></span>
+                <h1 class="logo-title">Pokédex</h1>
+            </div>
+
+            <div class="search-bar-container">
+                <span class="search-icon">🔍</span>
+                <input class="search-input" type="text" placeholder="Buscar por nombre o número..."
+                    [value]="searchQuery()" (input)="onSearchInput($any($event.target).value)" />
+                @if (searchQuery() || selectedType()) {
+                <button class="clear-btn" (click)="clearFilters()">✕</button>
+                }
+            </div>
         </div>
+    </header>
+
+    <!-- Filtros de tipo -->
+    <section class="type-filters">
+        <div class="type-filters-scroll">
+            @for (type of types; track type) {
+            <button class="type-chip" [class.active]="selectedType() === type" [style.--chip-color]="getTypeColor(type)"
+                (click)="filterByType(type)">
+                <span class="chip-icon">{{ getTypeIcon(type) }}</span>
+                <span class="chip-label">{{ type }}</span>
+            </button>
+            }
+        </div>
+    </section>
+
+    <!-- Info resultados -->
+    @if (!isLoading()) {
+    <div class="results-info">
+        <span>{{ pokemons().length }} pokémon encontrados</span>
+        @if (selectedType()) {
+        <span class="active-filter" [style.background]="getTypeColor(selectedType())">
+            {{ getTypeIcon(selectedType()) }} {{ selectedType() }}
+        </span>
+        }
+        @if (searchQuery()) {
+        <span class="search-tag">🔍 "{{ searchQuery() }}"</span>
+        }
     </div>
-    } @else {
-    <!-- Cambiado a max 3 columnas para hacer tarjetas más grandes -->
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-5">
-        @for (pokemon of pokemons(); track pokemon.id) {
-        <div class="col">
-            <!-- Tarjeta Dark suave -->
-            <div class="card h-100 shadow border-secondary rounded-4 overflow-hidden bg-dark text-light">
-                <div class="text-center p-4 d-flex justify-content-center align-items-center"
-                    style="background-color: rgba(255,255,255,0.05); min-height: 250px;">
-                    <img [src]="pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default"
-                        class="img-fluid" style="max-height: 200px; filter: drop-shadow(0px 8px 8px rgba(0,0,0,0.5));"
-                        [alt]="pokemon.name">
-                </div>
-                <div class="card-body text-center p-4">
-                    <h5 class="card-title text-capitalize fw-bold mb-4 fs-3">{{ pokemon.name }}</h5>
-                    <div class="d-flex justify-content-center flex-wrap gap-2">
-                        @for (typeInfo of pokemon.types; track typeInfo.type.name) {
-                        <!-- Color dinámico del tipo -->
-                        <span
-                            class="badge rounded-pill px-4 py-2 fs-6 text-capitalize text-white shadow-sm border border-light border-opacity-25"
-                            [style.backgroundColor]="getTypeColor(typeInfo.type.name)">
-                            {{ typeInfo.type.name }}
-                        </span>
-                        }
-                    </div>
+    }
+
+    <!-- Loading -->
+    @if (isLoading()) {
+    <div class="loading-screen">
+        <div class="pokeball-loader"></div>
+        <p class="loading-text">Cargando Pokémon...</p>
+    </div>
+    }
+
+    <!-- Grid -->
+    @if (!isLoading()) {
+    <main class="pokemon-grid">
+
+        @if (pokemons().length === 0) {
+        <div class="empty-state">
+            <span class="empty-icon">😶</span>
+            <p>No se encontraron Pokémon</p>
+            <button class="btn-reset" (click)="clearFilters()">Limpiar filtros</button>
+        </div>
+        }
+
+        @for (pokemon of pokemons(); track pokemon.id; let i = $index) {
+        <div class="pokemon-card" [class]="'type-bg-' + pokemon.types[0].type.name"
+            [style.animation-delay]="(i % 20) * 40 + 'ms'">
+            <div class="card-number">#{{ pokemon.id.toString().padStart(3, '0') }}</div>
+
+            <div class="card-image-wrapper">
+                <div class="card-pokeball-bg"></div>
+                <img class="card-image"
+                    [src]="pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default"
+                    [alt]="pokemon.name" loading="lazy" />
+            </div>
+
+            <div class="card-body">
+                <h3 class="card-name">{{ pokemon.name }}</h3>
+                <div class="card-types">
+                    @for (typeInfo of pokemon.types; track typeInfo.type.name) {
+                    <span class="type-badge" [style.background]="getTypeColor(typeInfo.type.name)">
+                        {{ typeInfo.type.name }}
+                    </span>
+                    }
                 </div>
             </div>
         </div>
         }
-    </div>
+    </main>
 
-    <!-- Paginador -->
-    <div class="d-flex justify-content-center align-items-center mt-5 gap-4 mt-auto pt-4">
-        <button class="btn btn-custom-dark px-4 py-2 rounded-pill fw-bold" (click)="prevPage()"
-            [disabled]="offset() === 0">
-            &laquo; Anterior
+    <!-- Paginación solo sin filtros activos -->
+    @if (!isFiltering() && pokemons().length > 0) {
+    <nav class="pagination">
+        <button class="page-btn" (click)="prevPage()" [disabled]="offset() === 0">
+            ← Anterior
         </button>
-        <span class="fw-bold fs-4 text-secondary">
-            Página {{ (offset() / limit) + 1 }}
-        </span>
-        <button class="btn btn-custom-dark px-4 py-2 rounded-pill fw-bold" (click)="nextPage()">
-            Siguiente &raquo;
-        </button>
-    </div>
+        <span class="page-indicator">Página {{ (offset() / limit) + 1 }}</span>
+        <button class="page-btn" (click)="nextPage()">Siguiente →</button>
+    </nav>
     }
+    }
+
 </div>
