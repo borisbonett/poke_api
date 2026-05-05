@@ -1,6 +1,6 @@
 import { Component, inject, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { PokeApiService } from "../../services/poke_api.services";
+import { PokeApiService } from "../../services/poke_api.service";
 import { forkJoin } from "rxjs";
 import { switchMap, debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { Subject } from "rxjs";
