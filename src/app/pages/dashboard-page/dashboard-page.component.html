@@ -7,7 +7,7 @@
                 style="width: 40px; height: 40px;">
                 <span class="fs-4 text-dark" style="line-height: 1;">⚡</span>
             </div>
-            <span class="fw-bold fs-4 text-uppercase text-white" style="letter-spacing: 1.5px;">PokéDash</span>
+            <span class="fw-bold fs-4 text-uppercase" style="letter-spacing: 1.5px; color: var(--app-text-color);">PokéDash</span>
         </a>
 
         <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
@@ -16,19 +16,33 @@
         </button>
 
         <div class="collapse navbar-collapse mt-3 mt-lg-0" id="navbarNav">
-            <ul class="navbar-nav ms-auto gap-2">
+            <ul class="navbar-nav ms-auto gap-2 align-items-center">
                 <li class="nav-item">
                     <a class="nav-link px-4 py-2 rounded-pill transition-all text-center text-lg-start"
-                        routerLink="/dashboard" routerLinkActive="bg-secondary bg-opacity-25 text-white fw-bold"
-                        [routerLinkActiveOptions]="{exact: true}">
+                        routerLink="/dashboard" routerLinkActive="bg-secondary bg-opacity-25 fw-bold"
+                        [routerLinkActiveOptions]="{exact: true}"
+                        style="color: var(--app-text-color);">
                         🏠 Inicio
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link px-4 py-2 rounded-pill transition-all text-center text-lg-start"
-                        routerLink="/dashboard/search" routerLinkActive="bg-secondary bg-opacity-25 text-white fw-bold">
+                        routerLink="/dashboard/search" routerLinkActive="bg-secondary bg-opacity-25 fw-bold"
+                        style="color: var(--app-text-color);">
                         🔍 Pokédex
                     </a>
+                </li>
+                <!-- Theme Toggle Button -->
+                <li class="nav-item">
+                    <button class="theme-toggle-btn" (click)="themeService.toggleTheme()" [title]="themeService.isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
+                        @if (themeService.isDark()) {
+                            <span class="theme-icon">☀️</span>
+                            <span class="theme-label">Claro</span>
+                        } @else {
+                            <span class="theme-icon">🌙</span>
+                            <span class="theme-label">Oscuro</span>
+                        }
+                    </button>
                 </li>
             </ul>
         </div>
@@ -38,7 +52,7 @@
 <!-- Main Content Area -->
 <main class="container py-5 min-vh-100 d-flex flex-column">
 
-    <!-- Hero Section (Sólo se muestra en el inicio /dashboard exacto) -->
+    <!-- Hero Section -->
     @if (router.url === '/dashboard') {
     <div class="row align-items-center flex-grow-1 gy-5 mt-2">
 
@@ -47,7 +61,7 @@
             <div class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-4 fw-bold shadow-sm fs-6">
                 🌟 Pokédex Interactiva 1.0
             </div>
-            <h1 class="display-3 fw-bolder mb-4 text-white" style="line-height: 1.1; letter-spacing: -1px;">
+            <h1 class="display-3 fw-bolder mb-4" style="line-height: 1.1; letter-spacing: -1px; color: var(--app-text-color);">
                 Descubre el mundo <br>
                 <span class="text-warning" style="text-shadow: 0 0 30px rgba(255,193,7,0.3);">Pokémon</span>
             </h1>
@@ -62,7 +76,7 @@
                     <span>🎮</span> Abrir Pokédex
                 </a>
                 <a href="https://pokeapi.co/" target="_blank"
-                    class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold shadow-sm btn-hover-scale d-flex justify-content-center align-items-center gap-2">
+                    class="btn btn-outline-secondary btn-lg px-5 py-3 rounded-pill fw-bold shadow-sm btn-hover-scale d-flex justify-content-center align-items-center gap-2">
                     <span>📚</span> API Oficial
                 </a>
             </div>
@@ -70,15 +84,10 @@
 
         <!-- Creative Graphic Section -->
         <div class="col-lg-6 text-center position-relative mt-5 mt-lg-0">
-            <!-- Glow background effect -->
             <div class="position-absolute top-50 start-50 translate-middle bg-warning rounded-circle blur-glow"></div>
-
-            <!-- Pikachu Float Image -->
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"
                 alt="Pikachu" class="img-fluid position-relative pikachu-float"
-                style="max-height: 450px; filter: drop-shadow(0 25px 25px rgba(0,0,0,0.6)); z-index: 1;">
-
-            <!-- Decorative floating Orbs -->
+                style="max-height: 450px; filter: drop-shadow(0 25px 25px rgba(0,0,0,0.4)); z-index: 1;">
             <div class="position-absolute badge bg-danger rounded-circle shadow-lg float-delay-1"
                 style="top: 10%; left: 15%; width: 50px; height: 50px;"></div>
             <div class="position-absolute badge bg-primary rounded-circle shadow-lg float-delay-2"
@@ -88,16 +97,14 @@
     </div>
     }
 
-
     <router-outlet></router-outlet>
-
 
     <footer class="mt-auto pt-5 pb-3">
         <div class="container text-center border-top border-secondary border-opacity-25 pt-4">
-            <p class="mb-1 text-white opacity-75" style="letter-spacing: 0.5px;">
+            <p class="mb-1 opacity-75" style="letter-spacing: 0.5px; color: var(--app-text-color);">
                 &copy; 2026 PokéDash. Todos los derechos reservados.
             </p>
-            <small class="text-secondary">
+            <small style="color: var(--app-muted-color, #6b7280);">
                 Desarrollado con ❤️ usando Angular y Bootstrap.<br>
                 Datos proporcionados por <a href="https://pokeapi.co/" target="_blank"
                     class="text-warning text-decoration-none transition-all hover-white">PokéAPI</a>.

@@ -1,12 +1,12 @@
-import { Component, inject, signal, effect } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { PokeApiService } from "../../services/poke_api.services";
-import { forkJoin, of } from "rxjs";
+import { forkJoin } from "rxjs";
 import { switchMap, debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { Subject } from "rxjs";
 
 @Component({
-  selector: "app-dashboard-page",
+  selector: "app-search-page",
   templateUrl: "./search-page.component.html",
   styleUrls: ["./search-page.component.scss"],
   imports: [FormsModule],
@@ -22,6 +22,10 @@ export default class SearchPageComponent {
   searchQuery = signal<string>("");
   selectedType = signal<string>("");
   isFiltering = signal<boolean>(false);
+
+  // Modal
+  selectedPokemon = signal<any>(null);
+  showModal = signal<boolean>(false);
 
   private searchSubject = new Subject<string>();
 
@@ -46,10 +50,18 @@ export default class SearchPageComponent {
     dark:"🌑", steel:"⚙️", fairy:"✨",
   };
 
+  statNames: { [key: string]: string } = {
+    "hp": "HP",
+    "attack": "Ataque",
+    "defense": "Defensa",
+    "special-attack": "Sp. Atk",
+    "special-defense": "Sp. Def",
+    "speed": "Velocidad",
+  };
+
   ngOnInit() {
     this.loadPokemonPage();
 
-    // Debounce búsqueda por nombre
     this.searchSubject.pipe(
       debounceTime(400),
       distinctUntilChanged()
@@ -58,7 +70,6 @@ export default class SearchPageComponent {
     });
   }
 
-  // Carga paginada normal (sin filtros)
   loadPokemonPage() {
     this.isLoading.set(true);
     this.pokemons.set([]);
@@ -79,7 +90,6 @@ export default class SearchPageComponent {
     });
   }
 
-  // Búsqueda por nombre o id en la API
   executeSearch(query: string) {
     if (!query.trim()) {
       this.isFiltering.set(false);
@@ -104,7 +114,6 @@ export default class SearchPageComponent {
     });
   }
 
-  // Búsqueda por tipo desde la API
   filterByType(type: string) {
     if (this.selectedType() === type) {
       this.selectedType.set("");
@@ -122,7 +131,6 @@ export default class SearchPageComponent {
 
     this.pokeApiService.getPokemonByType(type).pipe(
       switchMap((data: any) => {
-        // Tomar máximo 40 para no saturar
         const slice = data.pokemon.slice(0, 40);
         const requests = slice.map((entry: any) =>
           this.pokeApiService.getPokemonByUrl(entry.pokemon.url)
@@ -163,11 +171,46 @@ export default class SearchPageComponent {
     }
   }
 
+  openPokemonModal(pokemon: any) {
+    this.selectedPokemon.set(pokemon);
+    this.showModal.set(true);
+    document.body.style.overflow = 'hidden';
+  }
+
+  closePokemonModal() {
+    this.showModal.set(false);
+    this.selectedPokemon.set(null);
+    document.body.style.overflow = '';
+  }
+
   getTypeColor(type: string): string {
     return this.typeColors[type] || "#777";
   }
 
   getTypeIcon(type: string): string {
     return this.typeIcons[type] || "❓";
+  }
+
+  getStatName(statKey: string): string {
+    return this.statNames[statKey] || statKey;
+  }
+
+  getStatColor(value: number): string {
+    if (value >= 100) return '#4ade80';
+    if (value >= 70)  return '#facc15';
+    if (value >= 40)  return '#fb923c';
+    return '#f87171';
+  }
+
+  getStatPercent(value: number): number {
+    return Math.min((value / 255) * 100, 100);
+  }
+
+  formatHeight(height: number): string {
+    return (height / 10).toFixed(1) + ' m';
+  }
+
+  formatWeight(weight: number): string {
+    return (weight / 10).toFixed(1) + ' kg';
   }
 }

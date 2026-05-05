@@ -9,7 +9,7 @@
   100% { transform: translateY(0px); }
 }
 
-/* Efecto Glow de fondo para darle profundidad creativa */
+/* Efecto Glow de fondo */
 .blur-glow {
   width: 400px;
   height: 400px;
@@ -25,7 +25,7 @@
   100% { transform: translate(-50%, -50%) scale(1); }
 }
 
-/* Esferas decorativas flotando a destiempo */
+/* Esferas decorativas */
 .float-delay-1 {
   animation: float 5s ease-in-out infinite;
   animation-delay: 1s;
@@ -36,7 +36,7 @@
   animation-delay: 2s;
 }
 
-/* Hover interactivo para los botones principales */
+/* Hover interactivo para botones */
 .btn-hover-scale {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -46,15 +46,49 @@
   box-shadow: 0 15px 25px rgba(0,0,0,0.4) !important;
 }
 
-/* Transiciones genéricas para Navbar */
+/* Transiciones genéricas */
 .transition-all {
   transition: all 0.3s ease;
 }
 
 .nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(128, 128, 128, 0.1);
 }
 
 .hover-white:hover {
   color: #fff !important;
+}
+
+/* ── Theme Toggle Button ─────────────────────────────────────── */
+.theme-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 18px;
+  border-radius: 50px;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--app-text-color);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+
+  .theme-icon { font-size: 16px; }
+  .theme-label { letter-spacing: 0.3px; }
+
+  &:hover {
+    background: rgba(255, 193, 7, 0.15);
+    border-color: rgba(255, 193, 7, 0.4);
+    transform: translateY(-2px);
+  }
+}
+
+/* Light mode navbar overrides */
+html.light-mode .theme-toggle-btn {
+  border-color: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.04);
+  color: #1a1d27;
 }

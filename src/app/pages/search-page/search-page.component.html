@@ -69,7 +69,8 @@
 
         @for (pokemon of pokemons(); track pokemon.id; let i = $index) {
         <div class="pokemon-card" [class]="'type-bg-' + pokemon.types[0].type.name"
-            [style.animation-delay]="(i % 20) * 40 + 'ms'">
+            [style.animation-delay]="(i % 20) * 40 + 'ms'"
+            (click)="openPokemonModal(pokemon)">
             <div class="card-number">#{{ pokemon.id.toString().padStart(3, '0') }}</div>
 
             <div class="card-image-wrapper">
@@ -93,7 +94,7 @@
         }
     </main>
 
-    <!-- Paginación solo sin filtros activos -->
+    <!-- Paginación -->
     @if (!isFiltering() && pokemons().length > 0) {
     <nav class="pagination">
         <button class="page-btn" (click)="prevPage()" [disabled]="offset() === 0">
@@ -106,3 +107,86 @@
     }
 
 </div>
+
+<!-- ── Modal de Detalles ───────────────────────────────────────── -->
+@if (showModal() && selectedPokemon()) {
+<div class="modal-backdrop" (click)="closePokemonModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+
+        <!-- Botón cerrar -->
+        <button class="modal-close-btn" (click)="closePokemonModal()">✕</button>
+
+        <!-- Header con imagen y tipos -->
+        <div class="modal-header-section"
+            [style.background]="'linear-gradient(145deg, ' + getTypeColor(selectedPokemon().types[0].type.name) + '30 0%, transparent 60%)'">
+            <div class="modal-pokemon-number">#{{ selectedPokemon().id.toString().padStart(3, '0') }}</div>
+            <img class="modal-pokemon-image"
+                [src]="selectedPokemon().sprites.other['official-artwork'].front_default || selectedPokemon().sprites.front_default"
+                [alt]="selectedPokemon().name" />
+            <h2 class="modal-pokemon-name">{{ selectedPokemon().name }}</h2>
+            <div class="modal-types">
+                @for (typeInfo of selectedPokemon().types; track typeInfo.type.name) {
+                <span class="modal-type-badge" [style.background]="getTypeColor(typeInfo.type.name)">
+                    {{ getTypeIcon(typeInfo.type.name) }} {{ typeInfo.type.name }}
+                </span>
+                }
+            </div>
+        </div>
+
+        <!-- Cuerpo del modal -->
+        <div class="modal-body-section">
+
+            <!-- Métricas rápidas -->
+            <div class="modal-info-row">
+                <div class="modal-info-item">
+                    <span class="info-label">📏 Altura</span>
+                    <span class="info-value">{{ formatHeight(selectedPokemon().height) }}</span>
+                </div>
+                <div class="modal-info-item">
+                    <span class="info-label">⚖️ Peso</span>
+                    <span class="info-value">{{ formatWeight(selectedPokemon().weight) }}</span>
+                </div>
+                <div class="modal-info-item">
+                    <span class="info-label">⭐ Exp. Base</span>
+                    <span class="info-value">{{ selectedPokemon().base_experience ?? '—' }}</span>
+                </div>
+            </div>
+
+            <!-- Habilidades -->
+            <div class="modal-section">
+                <h4 class="modal-section-title">🎯 Habilidades</h4>
+                <div class="abilities-list">
+                    @for (ab of selectedPokemon().abilities; track ab.ability.name) {
+                    <span class="ability-badge" [class.hidden-ability]="ab.is_hidden">
+                        {{ ab.ability.name }}
+                        @if (ab.is_hidden) {
+                        <span class="hidden-tag">Oculta</span>
+                        }
+                    </span>
+                    }
+                </div>
+            </div>
+
+            <!-- Estadísticas base -->
+            <div class="modal-section">
+                <h4 class="modal-section-title">📊 Estadísticas Base</h4>
+                <div class="stats-list">
+                    @for (stat of selectedPokemon().stats; track stat.stat.name) {
+                    <div class="stat-row">
+                        <span class="stat-label">{{ getStatName(stat.stat.name) }}</span>
+                        <span class="stat-value" [style.color]="getStatColor(stat.base_stat)">{{ stat.base_stat }}</span>
+                        <div class="stat-bar-bg">
+                            <div class="stat-bar-fill"
+                                [style.width]="getStatPercent(stat.base_stat) + '%'"
+                                [style.background]="getStatColor(stat.base_stat)">
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+}

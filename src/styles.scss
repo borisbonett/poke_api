@@ -1,20 +1,213 @@
-/* You can add global styles to this file, and also import other style files */
-
+/* ── Global Variables (Dark mode default) ──────────────────── */
 :root {
-  /* Variables globales para cambiar fácilmente los colores en toda la app */
-  --app-bg-color: #1c1e22; /* Gris oscuro minimalista para el fondo de pantalla */
-  --app-card-bg: #2b3035;  /* Gris un poco más claro para que las tarjetas resalten */
-  --app-text-color: #e0e0e0; /* Color de texto general */
-  --app-border-color: rgba(255, 255, 255, 0.1); /* Bordes sutiles */
+  --app-bg-color: #0f1117;
+  --app-card-bg: #1a1d27;
+  --app-surface2: #22263a;
+  --app-text-color: #f0f0f5;
+  --app-muted-color: #8b8fa8;
+  --app-border-color: rgba(255, 255, 255, 0.08);
 }
 
 body {
   background-color: var(--app-bg-color) !important;
   color: var(--app-text-color) !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .card {
   background-color: var(--app-card-bg) !important;
   color: var(--app-text-color) !important;
   border-color: var(--app-border-color) !important;
+}
+
+/* ── Light Mode ─────────────────────────────────────────────── */
+html.light-mode {
+  --app-bg-color: #f0f3fa;
+  --app-card-bg: #ffffff;
+  --app-surface2: #e8ecf5;
+  --app-text-color: #1a1d2e;
+  --app-muted-color: #6b7280;
+  --app-border-color: rgba(0, 0, 0, 0.09);
+}
+
+html.light-mode body {
+  background-color: #f0f3fa !important;
+  color: #1a1d2e !important;
+}
+
+/* Navbar light mode */
+html.light-mode nav[class*="navbar"] {
+  background-color: #ffffff !important;
+  border-color: rgba(0,0,0,0.09) !important;
+}
+
+/* Pokédex wrapper */
+html.light-mode .pokedex-wrapper {
+  background-color: #f0f3fa;
+  background-image:
+    radial-gradient(ellipse at 20% 10%, rgba(99, 144, 240, 0.07) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 90%, rgba(238, 129, 48, 0.05) 0%, transparent 50%);
+  color: #1a1d2e;
+}
+
+/* Header */
+html.light-mode .pokedex-header {
+  background: rgba(240, 243, 250, 0.92);
+  border-bottom-color: rgba(0,0,0,0.09);
+}
+
+html.light-mode .logo-title {
+  color: #1a1d2e;
+}
+
+/* Search input */
+html.light-mode .search-input {
+  background: #ffffff;
+  border-color: rgba(0,0,0,0.12);
+  color: #1a1d2e;
+
+  &::placeholder { color: #9ca3af; }
+}
+
+html.light-mode .clear-btn {
+  background: #e8ecf5;
+  border-color: rgba(0,0,0,0.1);
+  color: #6b7280;
+}
+
+/* Type filters bar */
+html.light-mode .type-filters {
+  background: rgba(255,255,255,0.8);
+  border-bottom-color: rgba(0,0,0,0.08);
+}
+
+html.light-mode .type-chip {
+  background: #ffffff;
+  border-color: rgba(0,0,0,0.1);
+  color: #1a1d2e;
+}
+
+html.light-mode .results-info {
+  color: #6b7280;
+}
+
+html.light-mode .search-tag {
+  background: #e8ecf5;
+  color: #1a1d2e;
+}
+
+/* Cards */
+html.light-mode .pokemon-card {
+  background: #ffffff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+html.light-mode .card-name {
+  color: #1a1d2e;
+}
+
+html.light-mode .card-number {
+  color: rgba(0,0,0,0.18);
+}
+
+/* Type tints for light mode */
+html.light-mode .type-bg-fire   { background: linear-gradient(160deg, rgba(238,129,48,0.12) 0%, #ffffff 50%); }
+html.light-mode .type-bg-water  { background: linear-gradient(160deg, rgba(99,144,240,0.12) 0%, #ffffff 50%); }
+html.light-mode .type-bg-grass  { background: linear-gradient(160deg, rgba(122,199,76,0.10) 0%, #ffffff 50%); }
+html.light-mode .type-bg-electric { background: linear-gradient(160deg, rgba(247,208,44,0.12) 0%, #ffffff 50%); }
+html.light-mode .type-bg-ice    { background: linear-gradient(160deg, rgba(150,217,214,0.10) 0%, #ffffff 50%); }
+html.light-mode .type-bg-fighting { background: linear-gradient(160deg, rgba(194,46,40,0.10) 0%, #ffffff 50%); }
+html.light-mode .type-bg-poison { background: linear-gradient(160deg, rgba(163,62,161,0.10) 0%, #ffffff 50%); }
+html.light-mode .type-bg-ground { background: linear-gradient(160deg, rgba(226,191,101,0.10) 0%, #ffffff 50%); }
+html.light-mode .type-bg-flying { background: linear-gradient(160deg, rgba(169,143,243,0.10) 0%, #ffffff 50%); }
+html.light-mode .type-bg-psychic{ background: linear-gradient(160deg, rgba(249,85,135,0.10) 0%, #ffffff 50%); }
+html.light-mode .type-bg-bug    { background: linear-gradient(160deg, rgba(166,185,26,0.10) 0%, #ffffff 50%); }
+html.light-mode .type-bg-rock   { background: linear-gradient(160deg, rgba(182,161,54,0.10) 0%, #ffffff 50%); }
+html.light-mode .type-bg-ghost  { background: linear-gradient(160deg, rgba(115,87,151,0.11) 0%, #ffffff 50%); }
+html.light-mode .type-bg-dragon { background: linear-gradient(160deg, rgba(111,53,252,0.10) 0%, #ffffff 50%); }
+html.light-mode .type-bg-dark   { background: linear-gradient(160deg, rgba(112,87,70,0.10) 0%, #ffffff 50%); }
+html.light-mode .type-bg-steel  { background: linear-gradient(160deg, rgba(183,183,206,0.10) 0%, #ffffff 50%); }
+html.light-mode .type-bg-fairy  { background: linear-gradient(160deg, rgba(214,133,173,0.10) 0%, #ffffff 50%); }
+html.light-mode .type-bg-normal { background: linear-gradient(160deg, rgba(168,167,122,0.10) 0%, #ffffff 50%); }
+
+/* Pagination */
+html.light-mode .page-btn {
+  background: #ffffff;
+  border-color: rgba(0,0,0,0.1);
+  color: #1a1d2e;
+}
+
+html.light-mode .page-indicator {
+  color: #6b7280;
+}
+
+/* Modal */
+html.light-mode .modal-container {
+  background: #ffffff;
+  border-color: rgba(0,0,0,0.1);
+}
+
+html.light-mode .modal-close-btn {
+  background: #f0f3fa;
+  border-color: rgba(0,0,0,0.1);
+  color: #6b7280;
+}
+
+html.light-mode .modal-pokemon-name {
+  color: #1a1d2e;
+}
+
+html.light-mode .modal-pokemon-number {
+  color: #9ca3af;
+}
+
+html.light-mode .modal-info-row {
+  background: #f0f3fa;
+}
+
+html.light-mode .modal-info-item .info-label {
+  color: #6b7280;
+}
+
+html.light-mode .modal-info-item .info-value {
+  color: #1a1d2e;
+}
+
+html.light-mode .modal-section-title {
+  color: #9ca3af;
+}
+
+html.light-mode .ability-badge {
+  background: #f0f3fa;
+  border-color: rgba(0,0,0,0.08);
+  color: #1a1d2e;
+}
+
+html.light-mode .stat-label {
+  color: #6b7280;
+}
+
+html.light-mode .stat-bar-bg {
+  background: rgba(0,0,0,0.07);
+}
+
+html.light-mode .modal-header-section {
+  border-bottom-color: rgba(0,0,0,0.08);
+}
+
+/* Loading */
+html.light-mode .loading-text {
+  color: #6b7280;
+}
+
+/* Empty state */
+html.light-mode .empty-state {
+  color: #6b7280;
+}
+
+html.light-mode .btn-reset {
+  background: #e8ecf5;
+  border-color: rgba(0,0,0,0.1);
+  color: #1a1d2e;
 }

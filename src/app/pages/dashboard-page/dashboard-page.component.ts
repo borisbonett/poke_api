@@ -1,5 +1,6 @@
 import { Component, inject } from "@angular/core";
 import { Router, RouterOutlet, RouterLink, RouterLinkActive } from "@angular/router";
+import { ThemeService } from "../../services/theme.service";
 
 @Component({
     selector: "app-dashboard-page",
@@ -9,4 +10,5 @@ import { Router, RouterOutlet, RouterLink, RouterLinkActive } from "@angular/rou
 })
 export default class DashboardPageComponent {
     public router = inject(Router);
+    public themeService = inject(ThemeService);
 }

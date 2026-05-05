@@ -29,7 +29,7 @@ $radius-chip: 50px;
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(15, 17, 23, 0.85);
+  background: rgba(15, 17, 23, 0.88);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid $border;
   padding: 14px 20px;
@@ -277,8 +277,8 @@ $radius-chip: 50px;
   margin: 20px auto 0;
   padding: 0 20px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(390px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 22px;
 }
 
 // ── Card ───────────────────────────────────────────────────────
@@ -361,16 +361,16 @@ $types: (
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 28px 16px 10px;
-  min-height: 180px;
+  padding: 24px 16px 8px;
+  min-height: 210px;
 }
 
 .card-pokeball-bg {
   position: absolute;
-  width: 120px;
-  height: 120px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
-  border: 24px solid rgba(255, 255, 255, 0.06);
+  border: 28px solid rgba(255, 255, 255, 0.06);
   opacity: 0.1;
   transition: opacity 0.3s ease, transform 0.4s ease;
   top: 10px;
@@ -378,13 +378,13 @@ $types: (
 }
 
 .card-image {
-  width: 130px;
-  height: 130px;
+  width: 165px;
+  height: 165px;
   object-fit: contain;
   position: relative;
   z-index: 1;
   transition: transform 0.3s ease;
-  filter: drop-shadow(0 8px 12px rgba(0,0,0,0.5));
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5));
 }
 
 .card-body {
@@ -496,6 +496,260 @@ $types: (
   color: $muted;
 }
 
+// ── Modal ──────────────────────────────────────────────────────
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal-container {
+  background: $surface;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 28px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.1) transparent;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px) scale(0.94); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.08);
+  color: $muted;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(255,255,255,0.15);
+    color: $text;
+    transform: scale(1.1);
+  }
+}
+
+.modal-header-section {
+  padding: 36px 24px 22px;
+  text-align: center;
+  border-bottom: 1px solid $border;
+  position: relative;
+}
+
+.modal-pokemon-number {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: $muted;
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+
+.modal-pokemon-image {
+  width: 210px;
+  height: 210px;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 28px rgba(0,0,0,0.55));
+  animation: floatModal 3.5s ease-in-out infinite;
+}
+
+@keyframes floatModal {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+
+.modal-pokemon-name {
+  font-size: 1.9rem;
+  font-weight: 800;
+  text-transform: capitalize;
+  color: $text;
+  margin: 14px 0 10px;
+  letter-spacing: -0.4px;
+}
+
+.modal-types {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.modal-type-badge {
+  padding: 5px 16px;
+  border-radius: 50px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #fff;
+  text-transform: capitalize;
+  letter-spacing: 0.3px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+}
+
+// ── Modal Body ─────────────────────────────────────────────────
+.modal-body-section {
+  padding: 22px 24px 30px;
+}
+
+.modal-info-row {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+  background: $surface2;
+  border-radius: 18px;
+  padding: 18px 12px;
+  margin-bottom: 24px;
+}
+
+.modal-info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+
+  .info-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: $muted;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+
+  .info-value {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: $text;
+  }
+}
+
+.modal-section {
+  margin-bottom: 22px;
+}
+
+.modal-section-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: $muted;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.abilities-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ability-badge {
+  padding: 7px 16px;
+  border-radius: 50px;
+  background: $surface2;
+  border: 1px solid $border;
+  color: $text;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  &.hidden-ability {
+    border-color: rgba(247, 208, 44, 0.35);
+    background: rgba(247, 208, 44, 0.07);
+  }
+}
+
+.hidden-tag {
+  font-size: 0.62rem;
+  padding: 2px 7px;
+  background: rgba(247, 208, 44, 0.18);
+  color: #F7D02C;
+  border-radius: 10px;
+  font-weight: 800;
+}
+
+// ── Stat bars ──────────────────────────────────────────────────
+.stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: 82px 38px 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: $muted;
+  text-align: right;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.stat-value {
+  font-size: 0.88rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.stat-bar-bg {
+  height: 8px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.stat-bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  animation: growBar 0.7s ease forwards;
+  transform-origin: left;
+}
+
+@keyframes growBar {
+  from { width: 0 !important; }
+}
+
+// ── Light mode overrides (global via styles.scss html.light-mode) ──
+// Applied globally so they work despite Angular encapsulation
+
 // ── Responsive ─────────────────────────────────────────────────
 @media (max-width: 768px) {
   .header-inner {
@@ -510,8 +764,19 @@ $types: (
     gap: 14px;
   }
 
+  .card-image {
+    width: 130px;
+    height: 130px;
+  }
+
+  .card-image-wrapper { min-height: 170px; }
+
   .type-chip .chip-label { display: none; }
   .type-chip { padding: 8px 10px; }
+
+  .modal-pokemon-image { width: 170px; height: 170px; }
+  .modal-container { border-radius: 20px; }
+  .stat-row { grid-template-columns: 72px 34px 1fr; }
 }
 
 @media (max-width: 480px) {
